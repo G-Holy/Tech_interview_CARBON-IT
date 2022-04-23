@@ -1,0 +1,22 @@
+{
+  "root": "libs/adventure/parsor",
+  "sourceRoot": "libs/adventure/parsor/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/adventure/parsor/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/adventure/parsor"],
+      "options": {
+        "jestConfig": "libs/adventure/parsor/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
