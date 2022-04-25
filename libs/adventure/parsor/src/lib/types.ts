@@ -3,5 +3,4 @@ export enum InstructionsToken {
   MOUNTAIN = 'M',
   TREASURE = 'T',
   ADVENTURER = 'A',
-  COMMENTS = '#',
 }
