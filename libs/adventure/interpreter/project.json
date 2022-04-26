@@ -1,0 +1,22 @@
+{
+  "root": "libs/adventure/interpreter",
+  "sourceRoot": "libs/adventure/interpreter/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/adventure/interpreter/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/adventure/interpreter"],
+      "options": {
+        "jestConfig": "libs/adventure/interpreter/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
