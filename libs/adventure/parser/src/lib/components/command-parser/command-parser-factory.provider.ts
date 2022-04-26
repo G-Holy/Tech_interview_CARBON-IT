@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandFlag, CommandTokens } from '@treasure-hunt/adventure/types';
 
-export const commandParsorIndex = {
+export const commandParserIndex = {
   [CommandFlag.MAP]: (tokens: CommandTokens) => {
     return {
       type: CommandFlag.MAP,
@@ -37,10 +37,10 @@ export const commandParsorIndex = {
 };
 
 @Injectable()
-export class CommandParsorFactoryProvider {
-  private commandParsors = commandParsorIndex;
+export class CommandParserFactoryProvider {
+  private commandParsers = commandParserIndex;
 
-  getParsor(flag: CommandFlag) {
-    return this.commandParsors[flag];
+  getParser(flag: CommandFlag) {
+    return this.commandParsers[flag];
   }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'adventure-parsor',
+  displayName: 'adventure-parser',
   preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/libs/adventure/parsor',
+  coverageDirectory: '../../../coverage/libs/adventure/parser',
 };

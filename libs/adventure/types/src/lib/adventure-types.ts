@@ -22,5 +22,5 @@ export enum CommandFlag {
 export type CommandTokens = string[];
 
 export function isCommandFlag(value: string): value is CommandFlag {
-  return value in Object.values(CommandFlag);
+  return Object.values(CommandFlag).includes(value as CommandFlag);
 }

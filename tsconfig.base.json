@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@treasure-hunt/adventure-parser": ["libs/adventure/parser/src/index.ts"],
       "@treasure-hunt/adventure/interpreter": [
         "libs/adventure/interpreter/src/index.ts"
       ],
-      "@treasure-hunt/adventure/parsor": ["libs/adventure/parsor/src/index.ts"],
       "@treasure-hunt/adventure/types": ["libs/adventure/types/src/index.ts"]
     }
   },

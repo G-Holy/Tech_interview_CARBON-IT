@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { AdventureParsorService } from '@treasure-hunt/adventure/parsor';
+import { AdventureParserService } from '@treasure-hunt/adventure-parser';
 
 @Injectable()
 export class AppService {
-  constructor(private readonly AdventureParsor: AdventureParsorService) {}
+  constructor(private readonly AdventureParser: AdventureParserService) {}
 
   async generateAdventure(AdventureFilePath: string) {
-    return this.AdventureParsor.parseAdventure(AdventureFilePath);
+    return this.AdventureParser.parseAdventure(AdventureFilePath);
   }
 }

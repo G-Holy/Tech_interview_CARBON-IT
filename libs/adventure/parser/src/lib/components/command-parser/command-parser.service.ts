@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { CommandParsorFactoryProvider } from './command-parsor-factory.provider';
-import { CommandLexorProvider } from './command-lexor.provider';
+import { CommandParserFactoryProvider } from './command-parser-factory.provider';
+import { CommandLexerProvider } from './command-lexer.provider';
 import { FileContent, isCommandFlag } from '@treasure-hunt/adventure/types';
 
 @Injectable()
-export class CommandParsorService {
+export class CommandParserService {
   constructor(
-    private readonly commandParsorFactory: CommandParsorFactoryProvider,
-    private readonly lexor: CommandLexorProvider
+    private readonly commandParserFactory: CommandParserFactoryProvider,
+    private readonly lexor: CommandLexerProvider
   ) {}
 
   // TODO: clean this function into smaller functions
@@ -23,15 +23,14 @@ export class CommandParsorService {
     const identifier = tokens.shift();
 
     if (isCommandFlag(identifier)) {
-      const commandParsor = this.commandParsorFactory.getParsor(identifier);
-      if (commandParsor) {
-        const command = commandParsor(tokens);
-        // TODO avec class + validation : const command = commandParsor.parse(tokens);
+      const commandParser = this.commandParserFactory.getParser(identifier);
+      if (commandParser) {
+        const command = commandParser(tokens);
+        // TODO avec class + validation : const command = commandParser.parse(tokens);
         // TODO: typer les commandes
         parsedCommands.push(command);
       }
-
-      return parsedCommands;
     }
+    return parsedCommands;
   };
 }

@@ -3,7 +3,7 @@ import { FileContent } from '@treasure-hunt/adventure/types';
 import { Fs, FS_TOKEN } from './dependencies/fs-dependency.provider';
 
 @Injectable()
-export class FileParsorProvider {
+export class FileParserProvider {
   constructor(@Inject(FS_TOKEN) private readonly fs: Fs) {}
 
   getFileContent(filePath: string): FileContent {

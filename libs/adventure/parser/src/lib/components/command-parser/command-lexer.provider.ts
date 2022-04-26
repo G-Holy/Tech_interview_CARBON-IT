@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CommandTokens } from '@treasure-hunt/adventure/types';
 
 @Injectable()
-export class CommandLexorProvider {
+export class CommandLexerProvider {
   constructor() {}
 
   getTokens(line: string): CommandTokens {
@@ -15,9 +15,9 @@ export class CommandLexorProvider {
   }
 
   private sanitizeLine(line: string) {
-    let sanitizedLine = this.removeNonAlphaNumCharacters(line);
-    sanitizedLine = this.trimExtraSpace(sanitizedLine);
-    return sanitizedLine;
+    const lineWithoutNonAlphaNum = this.removeNonAlphaNumCharacters(line);
+    const lineWithoutExtraSpaece = this.trimExtraSpace(lineWithoutNonAlphaNum);
+    return lineWithoutExtraSpaece;
   }
 
   private trimExtraSpace(line: string) {
