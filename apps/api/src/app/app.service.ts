@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AdventureParsorService } from 'libs/adventure/parsor/src/lib/adventure-parsor.service';
+import { AdventureParsorService } from '@treasure-hunt/adventure/parsor';
 
 @Injectable()
 export class AppService {

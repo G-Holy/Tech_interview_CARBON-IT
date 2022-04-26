@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InstructionsToken } from '../types';
+import { InstructionsToken } from '../../types';
 
 interface Localizable {
   x: number;
@@ -49,7 +49,7 @@ export const instructionIndex = {
 };
 
 @Injectable()
-export class InstructionFactoryProvider {
+export class CommandParsorFactoryProvider {
   private instructions = instructionIndex;
 
   getParsor(identifier: string) {

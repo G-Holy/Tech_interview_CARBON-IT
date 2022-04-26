@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class LexorProvider {
+export class CommandLexorProvider {
   constructor() {}
 
   getTokens(line: string) {
@@ -9,8 +9,8 @@ export class LexorProvider {
     return sanitizedLine.split(' ');
   }
 
-  private removeNonAlphaNumCharacters(rawInstruction: string) {
-    return rawInstruction.replace(/[^\w\s]/gi, '');
+  private removeNonAlphaNumCharacters(line: string) {
+    return line.replace(/[^\w\s]/gi, '');
   }
 
   private sanitizeLine(line: string) {
