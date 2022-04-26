@@ -6,12 +6,12 @@ import { FileParsorProvider } from './file-parsor.provider';
 export class AdventureParsorService {
   constructor(
     private readonly fileParsor: FileParsorProvider,
-    private readonly instructionParsor: CommandParsorService
+    private readonly commandParsor: CommandParsorService
   ) {}
   async parseAdventure(adventurePath: string) {
     const fileContent = this.fileParsor.getFileContent(adventurePath);
-    const instructions = this.instructionParsor.parseFileContent(fileContent);
+    const commands = this.commandParsor.parseFileContent(fileContent);
 
-    return instructions;
+    return commands;
   }
 }

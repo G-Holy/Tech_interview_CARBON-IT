@@ -1,44 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { InstructionsToken } from '../../types';
+import { CommandFlag, CommandTokens } from '@treasure-hunt/adventure/types';
 
-interface Localizable {
-  x: number;
-  y: number;
-}
-
-enum CardinalOrientation {
-  NORTH,
-  EAST,
-  SOUTH,
-  WEST,
-}
-
-export const instructionIndex = {
-  [InstructionsToken.MAP]: (tokens: string[]) => {
+export const commandParsorIndex = {
+  [CommandFlag.MAP]: (tokens: CommandTokens) => {
     return {
-      type: InstructionsToken.MAP,
+      type: CommandFlag.MAP,
       lenght: +tokens[0],
       height: +tokens[1],
     };
   },
-  [InstructionsToken.MOUNTAIN]: (tokens: string[]) => {
+  [CommandFlag.MOUNTAIN]: (tokens: CommandTokens) => {
     return {
-      type: InstructionsToken.MOUNTAIN,
+      type: CommandFlag.MOUNTAIN,
       x: +tokens[0],
       y: +tokens[1],
     };
   },
-  [InstructionsToken.TREASURE]: (tokens: string[]) => {
+  [CommandFlag.TREASURE]: (tokens: CommandTokens) => {
     return {
-      type: InstructionsToken.TREASURE,
+      type: CommandFlag.TREASURE,
       x: +tokens[0],
       y: +tokens[1],
       number: +tokens[2],
     };
   },
-  [InstructionsToken.ADVENTURER]: (tokens: string[]) => {
+  [CommandFlag.ADVENTURER]: (tokens: CommandTokens) => {
     return {
-      type: InstructionsToken.ADVENTURER,
+      type: CommandFlag.ADVENTURER,
       name: tokens[0],
       x: +tokens[1],
       y: +tokens[2],
@@ -50,9 +38,9 @@ export const instructionIndex = {
 
 @Injectable()
 export class CommandParsorFactoryProvider {
-  private instructions = instructionIndex;
+  private commandParsors = commandParsorIndex;
 
-  getParsor(identifier: string) {
-    return this.instructions[identifier];
+  getParsor(flag: CommandFlag) {
+    return this.commandParsors[flag];
   }
 }

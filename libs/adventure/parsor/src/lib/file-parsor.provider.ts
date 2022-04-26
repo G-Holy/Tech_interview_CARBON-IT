@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { FileContent } from '@treasure-hunt/adventure/types';
 import { Fs, FS_TOKEN } from './dependencies/fs-dependency.provider';
-
-type FileContent = string[];
 
 @Injectable()
 export class FileParsorProvider {

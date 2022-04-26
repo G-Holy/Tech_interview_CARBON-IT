@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommandParsorFactoryProvider } from './command-parsor-factory.provider';
 import { CommandLexorProvider } from './command-lexor.provider';
+import { FileContent, isCommandFlag } from '@treasure-hunt/adventure/types';
 
 @Injectable()
 export class CommandParsorService {
@@ -9,24 +10,28 @@ export class CommandParsorService {
     private readonly lexor: CommandLexorProvider
   ) {}
 
-  parseFileContent(rawLines: string[]) {
-    const commands = rawLines.reduce(this.parseLineCallback, []);
+  // TODO: clean this function into smaller functions
+  parseFileContent(lines: FileContent) {
+    const commands = lines.reduce(this.parseLineCallback, []);
 
     console.log(commands);
     return commands;
   }
 
-  private parseLineCallback = (parsedCommands: unknown[], rawLine: string) => {
-    const tokens = this.lexor.getTokens(rawLine);
+  private parseLineCallback = (parsedCommands: unknown[], line: string) => {
+    const tokens = this.lexor.getTokens(line);
     const identifier = tokens.shift();
 
-    const commandParsor = this.commandParsorFactory.getParsor(identifier);
-    if (commandParsor) {
-      const command = commandParsor(tokens);
-      // TODO avec class + validation : const command = commandParsor.parse(tokens);
-      parsedCommands.push(command);
-    }
+    if (isCommandFlag(identifier)) {
+      const commandParsor = this.commandParsorFactory.getParsor(identifier);
+      if (commandParsor) {
+        const command = commandParsor(tokens);
+        // TODO avec class + validation : const command = commandParsor.parse(tokens);
+        // TODO: typer les commandes
+        parsedCommands.push(command);
+      }
 
-    return parsedCommands;
+      return parsedCommands;
+    }
   };
 }

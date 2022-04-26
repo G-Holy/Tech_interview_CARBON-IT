@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { CommandTokens } from '@treasure-hunt/adventure/types';
 
 @Injectable()
 export class CommandLexorProvider {
   constructor() {}
 
-  getTokens(line: string) {
+  getTokens(line: string): CommandTokens {
     const sanitizedLine = this.sanitizeLine(line);
     return sanitizedLine.split(' ');
   }
