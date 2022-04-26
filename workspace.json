@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "adventure-parsor": "libs/adventure/parsor",
+    "adventure-types": "libs/adventure/types",
     "api": "apps/api"
   }
 }

@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@treasure-hunt/adventure/parsor": ["libs/adventure/parsor/src/index.ts"]
+      "@treasure-hunt/adventure/parsor": ["libs/adventure/parsor/src/index.ts"],
+      "@treasure-hunt/adventure/types": ["libs/adventure/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
