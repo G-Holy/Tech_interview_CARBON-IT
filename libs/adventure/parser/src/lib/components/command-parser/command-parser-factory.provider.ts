@@ -1,22 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { CommandFlag, CommandTokens } from '@treasure-hunt/adventure/types';
+import {
+  AdventurerCommand,
+  AdventurerMovement,
+  CardinalDirection,
+  CommandFlag,
+  CommandTokens,
+  MapCommand,
+  MountainCommand,
+  TreasureCommand,
+} from '@treasure-hunt/adventure/types';
 
 export const commandParserIndex = {
-  [CommandFlag.MAP]: (tokens: CommandTokens) => {
+  [CommandFlag.MAP]: (tokens: CommandTokens): MapCommand => {
     return {
       type: CommandFlag.MAP,
-      lenght: +tokens[0],
+      length: +tokens[0],
       height: +tokens[1],
     };
   },
-  [CommandFlag.MOUNTAIN]: (tokens: CommandTokens) => {
+  [CommandFlag.MOUNTAIN]: (tokens: CommandTokens): MountainCommand => {
     return {
       type: CommandFlag.MOUNTAIN,
       x: +tokens[0],
       y: +tokens[1],
     };
   },
-  [CommandFlag.TREASURE]: (tokens: CommandTokens) => {
+  [CommandFlag.TREASURE]: (tokens: CommandTokens): TreasureCommand => {
     return {
       type: CommandFlag.TREASURE,
       x: +tokens[0],
@@ -24,14 +33,14 @@ export const commandParserIndex = {
       number: +tokens[2],
     };
   },
-  [CommandFlag.ADVENTURER]: (tokens: CommandTokens) => {
+  [CommandFlag.ADVENTURER]: (tokens: CommandTokens): AdventurerCommand => {
     return {
       type: CommandFlag.ADVENTURER,
       name: tokens[0],
       x: +tokens[1],
       y: +tokens[2],
-      orientation: tokens[3],
-      movementSequence: tokens[4],
+      orientation: tokens[3] as CardinalDirection,
+      movementSequence: tokens[4].split('') as AdventurerMovement[],
     };
   },
 };

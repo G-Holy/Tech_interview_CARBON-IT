@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CommandParserFactoryProvider } from './command-parser-factory.provider';
 import { CommandLexerProvider } from './command-lexer.provider';
-import { FileContent, isCommandFlag } from '@treasure-hunt/adventure/types';
+import {
+  Command,
+  FileContent,
+  isCommandFlag,
+} from '@treasure-hunt/adventure/types';
 
 @Injectable()
 export class CommandParserService {
@@ -13,12 +17,10 @@ export class CommandParserService {
   // TODO: clean this function into smaller functions
   parseFileContent(lines: FileContent) {
     const commands = lines.reduce(this.parseLineCallback, []);
-
-    console.log(commands);
     return commands;
   }
 
-  private parseLineCallback = (parsedCommands: unknown[], line: string) => {
+  private parseLineCallback = (parsedCommands: Command[], line: string) => {
     const tokens = this.lexor.getTokens(line);
     const identifier = tokens.shift();
 
