@@ -1,7 +1,6 @@
 import { HttpException, Injectable, Scope } from '@nestjs/common';
-import { Command, MapCommand } from '@treasure-hunt/adventure/types';
 import { CommandInterpreterProvider } from './command-interpreter.provider';
-import { Map } from './Map';
+import { Map, Command, Adventurer } from '@treasure-hunt/adventure/core';
 
 @Injectable({ scope: Scope.REQUEST })
 export class AdventureInterpreter {
@@ -19,11 +18,16 @@ export class AdventureInterpreter {
     const map = this.commandInterpreter.map;
     const adventurers = this.commandInterpreter.adventurers;
 
+    console.log(
+      '🚀 ~ file: ======== ~ adventurers',
+      JSON.stringify(adventurers)
+    );
     console.log('🚀 MAP === ', JSON.stringify(map));
 
-    // apply mountain command
-    // apply treasure commands
-    // execute adventurers movements
+    this.runAdventure(map, adventurers);
+
     return undefined;
   }
+
+  private runAdventure(map: Map, adventurers: Adventurer[]) {}
 }

@@ -1,20 +1,20 @@
 {
-  "root": "libs/adventure/types",
-  "sourceRoot": "libs/adventure/types/src",
+  "root": "libs/adventure/core",
+  "sourceRoot": "libs/adventure/core/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/adventure/types/**/*.ts"]
+        "lintFilePatterns": ["libs/adventure/core/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/adventure/types"],
+      "outputs": ["coverage/libs/adventure/core"],
       "options": {
-        "jestConfig": "libs/adventure/types/jest.config.ts",
+        "jestConfig": "libs/adventure/core/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -1,4 +1,4 @@
-import { Enumerable, Localizable } from './adventure-types';
+import { Enumerable, GeoCoordinate, Localizable } from './adventure-types';
 import { AdventurerMovement, CardinalDirection } from './adventurer-types';
 
 export enum CommandFlag {
@@ -30,7 +30,7 @@ export interface TreasureCommand extends Command, Localizable, Enumerable {
 export interface AdventurerCommand extends Command, Localizable {
   type: CommandFlag.ADVENTURER;
   name: string;
-  orientation: CardinalDirection;
+  direction: CardinalDirection;
   movementSequence: AdventurerMovement[];
 }
 

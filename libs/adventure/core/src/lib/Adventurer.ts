@@ -1,7 +1,4 @@
-import {
-  AdventurerMovement,
-  Geolocation,
-} from '@treasure-hunt/adventure/types';
+import { AdventurerMovement, Geolocation } from './types';
 
 export class Adventurer {
   private treasureCount = 0;

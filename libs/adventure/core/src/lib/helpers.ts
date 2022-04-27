@@ -5,7 +5,7 @@ import {
   MapCommand,
   MountainCommand,
   TreasureCommand,
-} from './command-types';
+} from './types/command-types';
 
 export const isMapCommand = (command: Command): command is MapCommand =>
   command.type === CommandFlag.MAP;

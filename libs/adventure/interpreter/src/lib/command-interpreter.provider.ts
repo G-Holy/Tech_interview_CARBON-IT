@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
-  AdventurerCommand,
   Command,
-  CommandFlag,
   isAdventurerCommand,
   isMapCommand,
   isMountainCommand,
   isTreasureCommand,
-  MapCommand,
-} from '@treasure-hunt/adventure/types';
-import { Map } from './Map';
+  Map,
+  Adventurer,
+} from '@treasure-hunt/adventure/core';
 
 @Injectable()
 export class CommandInterpreterProvider {
@@ -30,19 +28,31 @@ export class CommandInterpreterProvider {
 
   private executeTreasurepCommands(map: Map) {
     const treasuresCommands = this.getTreasureCommands();
-    treasuresCommands.forEach(({ x, y, count }) =>
-      map.addTreasures({ x, y }, count)
+    treasuresCommands.forEach(({ position, count }) =>
+      map.addTreasures(position, count)
     );
   }
 
   private executeMountainCommands(map: Map) {
     const mountainCommands = this.getMountainCommands();
-    mountainCommands.forEach(({ x, y }) => map.addMountain({ x, y }));
+    mountainCommands.forEach(({ position }) => map.addMountain(position));
   }
 
   public get adventurers() {
+    const adventurers: Adventurer[] = [];
     const adventurerCommands = this.getAdventurersCommand();
-    return undefined;
+
+    adventurerCommands.forEach(
+      ({ name, movementSequence, position, direction }) => {
+        const newcommer = new Adventurer(
+          name,
+          { position, direction },
+          movementSequence
+        );
+        adventurers.push(newcommer);
+      }
+    );
+    return adventurers;
   }
 
   public isAdventureValid() {

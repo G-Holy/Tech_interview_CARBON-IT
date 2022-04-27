@@ -1,9 +1,9 @@
 export type FileContent = string[];
 
-export type GeoCoordinate = Localizable;
+export type GeoCoordinate = { x: number; y: number };
+
 export interface Localizable {
-  x: number;
-  y: number;
+  position: GeoCoordinate;
 }
 
 export interface Enumerable {

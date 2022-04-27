@@ -7,7 +7,7 @@ import {
   MapContent,
   MountainCell,
   TreasureCell,
-} from '@treasure-hunt/adventure/types';
+} from './types';
 
 export class Map {
   private map: MapContent = [];
@@ -27,12 +27,12 @@ export class Map {
     }
   }
 
-  addMountain(position: GeoCoordinate) {
+  public addMountain(position: GeoCoordinate) {
     const mountainCell = this.createMountainCell();
     this.setCell(position, mountainCell);
   }
 
-  addTreasures(position: GeoCoordinate, count: number) {
+  public addTreasures(position: GeoCoordinate, count: number) {
     const currentCell = this.getCell(position);
 
     if (!isTreasureCell(currentCell)) {
@@ -53,18 +53,33 @@ export class Map {
   }
 
   private createFieldCell(): FieldCell {
-    return { type: CellType.FIELD, explorable: true };
+    return { type: CellType.FIELD, explorable: true, adventurer: undefined };
   }
 
   private createMountainCell(): MountainCell {
-    return { type: CellType.MOUNTAIN, explorable: false };
+    return {
+      type: CellType.MOUNTAIN,
+      explorable: false,
+      adventurer: undefined,
+    };
   }
 
   private createTreasureCell(): TreasureCell {
-    return { type: CellType.TREASURE, count: 0, explorable: true };
+    return {
+      type: CellType.TREASURE,
+      count: 0,
+      explorable: true,
+      adventurer: undefined,
+    };
   }
 
-  isPositionInMap(position: GeoCoordinate) {
+  // private createCell<CellToCreate extends Cell>(
+  //   specialProperties: Partial<CellToCreate>
+  // ): CellToCreate {
+  //   return { explorable: true, type: CellType.FIELD,  };
+  // }
+
+  public isPositionInMap(position: GeoCoordinate) {
     const { x, y } = position;
     return (
       this.isIndexInRange(x, this.length) && this.isIndexInRange(y, this.height)

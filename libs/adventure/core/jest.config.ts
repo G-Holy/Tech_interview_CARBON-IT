@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'adventure-types',
+  displayName: 'adventure-core',
   preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/adventure/types',
+  coverageDirectory: '../../../coverage/libs/adventure/core',
 };

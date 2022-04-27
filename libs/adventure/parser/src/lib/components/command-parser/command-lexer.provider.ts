@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandTokens } from '@treasure-hunt/adventure/types';
+import { CommandTokens } from '@treasure-hunt/adventure/core';
 
 @Injectable()
 export class CommandLexerProvider {

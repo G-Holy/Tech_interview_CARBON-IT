@@ -5,7 +5,7 @@ import {
   Command,
   FileContent,
   isCommandFlag,
-} from '@treasure-hunt/adventure/types';
+} from '@treasure-hunt/adventure/core';
 
 @Injectable()
 export class CommandParserService {

@@ -1,3 +1,4 @@
+import { Adventurer } from '../Adventurer';
 import { Enumerable } from './adventure-types';
 
 export enum CellType {
@@ -9,6 +10,7 @@ export enum CellType {
 export interface Cell {
   type: CellType;
   explorable: boolean;
+  adventurer: Adventurer | undefined;
 }
 
 export interface MountainCell extends Cell {

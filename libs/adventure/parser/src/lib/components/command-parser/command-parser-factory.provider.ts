@@ -8,7 +8,7 @@ import {
   MapCommand,
   MountainCommand,
   TreasureCommand,
-} from '@treasure-hunt/adventure/types';
+} from '@treasure-hunt/adventure/core';
 
 export const commandParserIndex = {
   [CommandFlag.MAP]: (tokens: CommandTokens): MapCommand => {
@@ -21,15 +21,19 @@ export const commandParserIndex = {
   [CommandFlag.MOUNTAIN]: (tokens: CommandTokens): MountainCommand => {
     return {
       type: CommandFlag.MOUNTAIN,
-      x: +tokens[0],
-      y: +tokens[1],
+      position: {
+        x: +tokens[0],
+        y: +tokens[1],
+      },
     };
   },
   [CommandFlag.TREASURE]: (tokens: CommandTokens): TreasureCommand => {
     return {
       type: CommandFlag.TREASURE,
-      x: +tokens[0],
-      y: +tokens[1],
+      position: {
+        x: +tokens[0],
+        y: +tokens[1],
+      },
       count: +tokens[2],
     };
   },
@@ -37,9 +41,11 @@ export const commandParserIndex = {
     return {
       type: CommandFlag.ADVENTURER,
       name: tokens[0],
-      x: +tokens[1],
-      y: +tokens[2],
-      orientation: tokens[3] as CardinalDirection,
+      position: {
+        x: +tokens[1],
+        y: +tokens[2],
+      },
+      direction: tokens[3] as CardinalDirection,
       movementSequence: tokens[4].split('') as AdventurerMovement[],
     };
   },

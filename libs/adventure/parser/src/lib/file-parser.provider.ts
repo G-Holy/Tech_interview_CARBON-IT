@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { FileContent } from '@treasure-hunt/adventure/types';
+import { FileContent } from '@treasure-hunt/adventure/core';
 import { Fs, FS_TOKEN } from './dependencies/fs-dependency.provider';
 
 @Injectable()
