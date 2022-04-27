@@ -5,6 +5,8 @@ import {
   CommandFlag,
   isAdventurerCommand,
   isMapCommand,
+  isMountainCommand,
+  isTreasureCommand,
   MapCommand,
 } from '@treasure-hunt/adventure/types';
 import { Map } from './Map';
@@ -17,19 +19,33 @@ export class CommandInterpreterProvider {
     this.commands = commands;
   }
 
-  get map() {
+  public get map() {
     const { length, height } = this.getMapCommand();
     const map = new Map(length, height);
 
-    return;
+    this.executeTreasurepCommands(map);
+    this.executeMountainCommands(map);
+    return map;
   }
 
-  get adventurers() {
+  private executeTreasurepCommands(map: Map) {
+    const treasuresCommands = this.getTreasureCommands();
+    treasuresCommands.forEach(({ x, y, count }) =>
+      map.addTreasures({ x, y }, count)
+    );
+  }
+
+  private executeMountainCommands(map: Map) {
+    const mountainCommands = this.getMountainCommands();
+    mountainCommands.forEach(({ x, y }) => map.addMountain({ x, y }));
+  }
+
+  public get adventurers() {
     const adventurerCommands = this.getAdventurersCommand();
     return undefined;
   }
 
-  isAdventureValid() {
+  public isAdventureValid() {
     const onlyOneMapCommand = this.commands.filter(isMapCommand).length <= 1;
     return onlyOneMapCommand;
   }
@@ -40,5 +56,13 @@ export class CommandInterpreterProvider {
 
   private getAdventurersCommand() {
     return this.commands.filter(isAdventurerCommand);
+  }
+
+  private getTreasureCommands() {
+    return this.commands.filter(isTreasureCommand);
+  }
+
+  private getMountainCommands() {
+    return this.commands.filter(isMountainCommand);
   }
 }

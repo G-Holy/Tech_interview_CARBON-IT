@@ -1,29 +1,31 @@
+import { Enumerable } from './adventure-types';
+
 export enum CellType {
-  MOUNTAIN,
-  TREASURE,
-  FIELD,
+  MOUNTAIN = 'mountain',
+  TREASURE = 'treasure',
+  FIELD = 'field',
 }
 
-interface ExplorableCell {
-  busy: boolean;
-}
 export interface Cell {
   type: CellType;
-  visitable: boolean;
+  explorable: boolean;
 }
 
 export interface MountainCell extends Cell {
   type: CellType.MOUNTAIN;
-  visitable: false;
+  explorable: false;
 }
 
-export interface TreasureCell extends Cell, ExplorableCell {
+export interface TreasureCell extends Cell, Enumerable {
   type: CellType.TREASURE;
-  treasureNumber: number;
 }
 
-export interface FieldCell extends Cell, ExplorableCell {
+export interface FieldCell extends Cell {
   type: CellType.FIELD;
 }
 
 export type MapContent = Cell[][];
+
+export const isTreasureCell = (cell: Cell): cell is TreasureCell => {
+  return cell.type === CellType.TREASURE;
+};

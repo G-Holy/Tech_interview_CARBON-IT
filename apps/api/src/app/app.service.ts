@@ -20,7 +20,7 @@ export class AppService {
     const commands = await this.adventureParser.parseAdventure(mapFilePath);
     console.log('PARSE: ', commands);
 
-    const resultFile = await this.adventureInterpreter.generateAdventure(
+    const resultFile = await this.adventureInterpreter.interpretAdventure(
       commands
     );
     console.log('GENERATE :', resultFile);

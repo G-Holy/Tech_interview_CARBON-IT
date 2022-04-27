@@ -1,7 +1,6 @@
-import { GeoCoordinate } from './adventure-types';
+import { Localizable } from './adventure-types';
 
-export interface Geolocation {
-  position: GeoCoordinate;
+export interface Geolocation extends Localizable {
   direction: CardinalDirection;
 }
 

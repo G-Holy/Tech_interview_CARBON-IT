@@ -9,7 +9,7 @@ export class AdventureInterpreter {
     private readonly commandInterpreter: CommandInterpreterProvider
   ) {}
 
-  public async generateAdventure(commands: Command[]) {
+  public interpretAdventure(commands: Command[]) {
     this.commandInterpreter.feedCommands(commands);
 
     // validate command program with rules (one map command)
@@ -19,7 +19,7 @@ export class AdventureInterpreter {
     const map = this.commandInterpreter.map;
     const adventurers = this.commandInterpreter.adventurers;
 
-    console.log('🚀 MAP === ', map);
+    console.log('🚀 MAP === ', JSON.stringify(map));
 
     // apply mountain command
     // apply treasure commands

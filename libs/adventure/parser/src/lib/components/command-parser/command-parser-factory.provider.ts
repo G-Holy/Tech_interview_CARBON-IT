@@ -30,7 +30,7 @@ export const commandParserIndex = {
       type: CommandFlag.TREASURE,
       x: +tokens[0],
       y: +tokens[1],
-      number: +tokens[2],
+      count: +tokens[2],
     };
   },
   [CommandFlag.ADVENTURER]: (tokens: CommandTokens): AdventurerCommand => {

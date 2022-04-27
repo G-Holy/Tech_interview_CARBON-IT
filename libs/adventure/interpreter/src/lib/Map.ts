@@ -1,35 +1,77 @@
 import {
+  Cell,
   CellType,
   FieldCell,
+  GeoCoordinate,
+  isTreasureCell,
   MapContent,
   MountainCell,
+  TreasureCell,
 } from '@treasure-hunt/adventure/types';
 
 export class Map {
-  map: MapContent = [];
+  private map: MapContent = [];
 
-  constructor(length: number, height: number) {
-    this.createMap(length, height);
+  constructor(
+    private readonly length: number,
+    private readonly height: number
+  ) {
+    this.createMap();
   }
 
-  private createMap(length: number, height: number) {
+  private createMap() {
     const fielCell: FieldCell = this.createFieldCell();
-    const defaultMapLine = Array(length).fill(fielCell);
-    for (let i = 0; i < height; i++) {
-      this.map.push(defaultMapLine);
+    for (let yLine = 0; yLine < this.height; yLine++) {
+      const xLine = Array(this.length).fill(fielCell);
+      this.map.push(xLine);
     }
   }
 
-  addMountain(x: number, y: number) {
+  addMountain(position: GeoCoordinate) {
     const mountainCell = this.createMountainCell();
-    this.map[x][y] = mountainCell;
+    this.setCell(position, mountainCell);
+  }
+
+  addTreasures(position: GeoCoordinate, count: number) {
+    const currentCell = this.getCell(position);
+
+    if (!isTreasureCell(currentCell)) {
+      const treasureCell = this.createTreasureCell();
+      this.setCell(position, treasureCell);
+    } else {
+      currentCell.count += count;
+      this.setCell(position, currentCell);
+    }
+  }
+
+  private setCell(position: GeoCoordinate, cell: Cell) {
+    this.map[position.y][position.x] = cell;
+  }
+
+  private getCell(position: GeoCoordinate) {
+    return this.map[position.y][position.x];
   }
 
   private createFieldCell(): FieldCell {
-    return { type: CellType.FIELD, visitable: true, busy: false };
+    return { type: CellType.FIELD, explorable: true };
   }
 
   private createMountainCell(): MountainCell {
-    return { type: CellType.MOUNTAIN, visitable: false };
+    return { type: CellType.MOUNTAIN, explorable: false };
+  }
+
+  private createTreasureCell(): TreasureCell {
+    return { type: CellType.TREASURE, count: 0, explorable: true };
+  }
+
+  isPositionInMap(position: GeoCoordinate) {
+    const { x, y } = position;
+    return (
+      this.isIndexInRange(x, this.length) && this.isIndexInRange(y, this.height)
+    );
+  }
+
+  private isIndexInRange(index: number, range: number) {
+    return index > 0 && index < range;
   }
 }
