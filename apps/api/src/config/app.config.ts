@@ -1,4 +1,5 @@
 import { merge } from 'lodash';
+import path = require('path');
 
 type FilePath = string;
 
@@ -7,7 +8,7 @@ interface AppConfig {
 }
 
 const defaultAppConfig: AppConfig = {
-  uploadDirectoryPath: './files',
+  uploadDirectoryPath: path.join(__dirname, './maps'),
 };
 
 const envAppConfig: Partial<AppConfig> = {

@@ -1,13 +1,13 @@
 import {
   Controller,
   Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AppService } from './app.service';
-import path = require('path');
 
 // TODO: find a cleaner way to type multer file
 import { Express } from 'express';
@@ -19,14 +19,13 @@ export class AppController {
 
   // TODO: return output file name after parsing/running?
   @Post('upload/treasure-map')
-  @UseInterceptors(FileInterceptor('hunt'))
-  uploadAdventure(@UploadedFile() hunt: Express.Multer.File) {
-    this.service.generateAdventure(path.join(hunt.destination, hunt.filename));
+  @UseInterceptors(FileInterceptor('map'))
+  uploadAdventure(@UploadedFile() mapFile: Express.Multer.File) {
+    return this.service.uploadTreasureMap(mapFile);
   }
 
-  @Get('download/treasures')
-  downloadTreasures() {
-    // TODO: pass file name returned from upload to parameter
-    throw new Error('not implement yet');
+  @Get('download/treasures/:fileName')
+  downloadTreasures(@Param('fileName') fileName: string) {
+    return this.service.downloadTreasures(fileName);
   }
 }
