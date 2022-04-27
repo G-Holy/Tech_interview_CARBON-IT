@@ -10,7 +10,7 @@ export enum CellType {
 export interface Cell {
   type: CellType;
   explorable: boolean;
-  adventurer: Adventurer | undefined;
+  adventurer?: Adventurer | null;
 }
 
 export interface MountainCell extends Cell {

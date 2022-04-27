@@ -16,3 +16,10 @@ export enum CardinalDirection {
   SOUTH = 'S',
   WEST = 'O',
 }
+
+export const CARDINAL_DIRECTION_COMPASS = [
+  CardinalDirection.NORTH,
+  CardinalDirection.EAST,
+  CardinalDirection.SOUTH,
+  CardinalDirection.WEST,
+];

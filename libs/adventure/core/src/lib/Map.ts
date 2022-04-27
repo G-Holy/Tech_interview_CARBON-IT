@@ -1,3 +1,5 @@
+import { HttpException } from '@nestjs/common';
+import { Adventurer } from './Adventurer';
 import {
   Cell,
   CellType,
@@ -44,6 +46,38 @@ export class Map {
     }
   }
 
+  public set adventurers(adventurers: Adventurer[]) {
+    adventurers.forEach((adventurer) => {
+      const position = adventurer.position;
+      if (!this.isPositionInMap(position)) {
+        throw new HttpException(`Explorer ${adventurer.name} is lost...`, 400);
+      }
+
+      const startingCell = this.getCell(position);
+      if (startingCell.adventurer !== undefined) {
+        throw new HttpException(
+          `Explorer ${adventurer.name} can't start here. This position is too crowded`,
+          400
+        );
+      }
+      startingCell.adventurer = adventurer;
+    });
+  }
+
+  public isCellExplorable(position: GeoCoordinate) {
+    const targetCell = this.getCell(position);
+    const cellIsEmpty = targetCell.adventurer === undefined;
+    const cellIsExplorable = targetCell.type !== CellType.MOUNTAIN;
+
+    return this.isPositionInMap(position) && cellIsEmpty && cellIsExplorable;
+  }
+
+  public moveAdventurer(adventurer: Adventurer) {
+    const { position, direction } = adventurer.getNextGeolocation();
+    // TODO: checker que ce soit la bonne geoloc
+    // TODO: bouger l'adventurer si tout est ok
+  }
+
   private setCell(position: GeoCoordinate, cell: Cell) {
     this.map[position.y][position.x] = cell;
   }
@@ -72,12 +106,6 @@ export class Map {
       adventurer: undefined,
     };
   }
-
-  // private createCell<CellToCreate extends Cell>(
-  //   specialProperties: Partial<CellToCreate>
-  // ): CellToCreate {
-  //   return { explorable: true, type: CellType.FIELD,  };
-  // }
 
   public isPositionInMap(position: GeoCoordinate) {
     const { x, y } = position;
