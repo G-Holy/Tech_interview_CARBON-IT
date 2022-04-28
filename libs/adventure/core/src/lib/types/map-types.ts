@@ -1,4 +1,3 @@
-import { Adventurer } from '../Adventurer';
 import { Enumerable } from './adventure-types';
 
 export enum CellType {
@@ -10,7 +9,10 @@ export enum CellType {
 export interface Cell {
   type: CellType;
   explorable: boolean;
-  adventurer?: Adventurer | null;
+}
+
+export interface ExplorableCell extends Cell {
+  isBeingExplored: boolean;
 }
 
 export interface MountainCell extends Cell {
@@ -18,11 +20,11 @@ export interface MountainCell extends Cell {
   explorable: false;
 }
 
-export interface TreasureCell extends Cell, Enumerable {
+export interface TreasureCell extends ExplorableCell, Enumerable {
   type: CellType.TREASURE;
 }
 
-export interface FieldCell extends Cell {
+export interface FieldCell extends ExplorableCell {
   type: CellType.FIELD;
 }
 

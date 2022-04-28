@@ -1,3 +1,4 @@
+import { Cell, ExplorableCell } from './types';
 import {
   AdventurerCommand,
   Command,
@@ -21,3 +22,7 @@ export const isTreasureCommand = (
 export const isMountainCommand = (
   command: Command
 ): command is MountainCommand => command.type === CommandFlag.MOUNTAIN;
+
+export const isExplorableCell = (cell: Cell): cell is ExplorableCell => {
+  return 'isBeingExplored' in cell;
+};

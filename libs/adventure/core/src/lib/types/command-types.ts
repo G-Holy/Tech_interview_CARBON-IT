@@ -1,4 +1,4 @@
-import { Enumerable, GeoCoordinate, Localizable } from './adventure-types';
+import { Enumerable, Localizable } from './adventure-types';
 import { AdventurerMovement, CardinalDirection } from './adventurer-types';
 
 export enum CommandFlag {

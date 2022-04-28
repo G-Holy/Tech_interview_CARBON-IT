@@ -29,13 +29,15 @@ export class CommandInterpreterProvider {
   private executeTreasurepCommands(map: Map) {
     const treasuresCommands = this.getTreasureCommands();
     treasuresCommands.forEach(({ position, count }) =>
-      map.addTreasures(position, count)
+      map.addTreasuresAtPosition(position, count)
     );
   }
 
   private executeMountainCommands(map: Map) {
     const mountainCommands = this.getMountainCommands();
-    mountainCommands.forEach(({ position }) => map.addMountain(position));
+    mountainCommands.forEach(({ position }) =>
+      map.addMountainAtPosition(position)
+    );
   }
 
   public get adventurers() {

@@ -10,12 +10,17 @@ abstract class Movement {
 
   public abstract calculateNextGeolocation(): Geolocation;
 
-  protected shiftDirectionFromCompass(directionIndex: number) {
-    const newDirection = CARDINAL_DIRECTION_COMPASS.at(directionIndex);
-    if (newDirection === undefined) {
-      throw new Error('Woops. The compass is broken');
-    }
+  protected shiftDirectionFromCompass(newDirectionIndex: number) {
+    const directionTypeCount = CARDINAL_DIRECTION_COMPASS.length;
+    const newDirection =
+      CARDINAL_DIRECTION_COMPASS[
+        ((newDirectionIndex % directionTypeCount) + directionTypeCount) %
+          directionTypeCount
+      ];
 
+    if (newDirection === undefined) {
+      throw new Error('Woops. The compass is broken ====');
+    }
     this.geolocation.direction = newDirection;
   }
 
@@ -39,18 +44,18 @@ class ForwardMovement extends Movement {
   calculateNextGeolocation(): Geolocation {
     switch (this.geolocation.direction) {
       case CardinalDirection.NORTH:
-        this.geolocation.position.y += 1;
+        this.geolocation.position.y--;
         break;
 
       case CardinalDirection.EAST:
-        this.geolocation.position.x += 1;
+        this.geolocation.position.x++;
         break;
 
       case CardinalDirection.SOUTH:
-        this.geolocation.position.y -= 1;
+        this.geolocation.position.y++;
         break;
       case CardinalDirection.WEST:
-        this.geolocation.position.y -= 1;
+        this.geolocation.position.x--;
         break;
 
       default:

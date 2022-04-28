@@ -1,11 +1,17 @@
 import { movementFactory } from './Movement';
-import { AdventurerMovement, GeoCoordinate, Geolocation } from './types';
+import {
+  AdventurerMovement,
+  CardinalDirection,
+  GeoCoordinate,
+  Geolocation,
+} from './types';
 
 export class Adventurer {
-  private treasureCount = 0;
+  private treasures = 0;
+
   constructor(
     readonly name: string,
-    private readonly geoLocation: Geolocation,
+    private geoLocation: Geolocation,
     private readonly movements: AdventurerMovement[]
   ) {}
 
@@ -17,18 +23,30 @@ export class Adventurer {
     return this.geoLocation.position;
   }
 
+  public set position(newPosition: GeoCoordinate) {
+    this.geoLocation.position = newPosition;
+  }
+
   public get movementsLeft(): number {
     return this.movements.length;
   }
 
-  move() {
+  public set direction(newDirection: CardinalDirection) {
+    this.geoLocation.direction = newDirection;
+  }
+
+  public putTreasuresInBackpack(foundTreasures: number) {
+    this.treasures += foundTreasures;
+  }
+
+  public move() {
     const movement = this.movements.shift();
     if (!movement) {
       return;
     }
   }
 
-  getNextGeolocation() {
+  public getNextGeolocation() {
     const movementFlag = this.movements.shift();
     if (!movementFlag) {
       return this.geolocation;

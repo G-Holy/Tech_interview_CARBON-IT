@@ -1,5 +1,6 @@
 import { HttpException } from '@nestjs/common';
 import { Adventurer } from './Adventurer';
+import { isExplorableCell } from './helpers';
 import {
   Cell,
   CellType,
@@ -11,6 +12,7 @@ import {
   TreasureCell,
 } from './types';
 
+// TODO: !!! découpler MapBuilder/Map
 export class Map {
   private map: MapContent = [];
 
@@ -23,27 +25,26 @@ export class Map {
 
   private createMap() {
     const fielCell: FieldCell = this.createFieldCell();
-    for (let yLine = 0; yLine < this.height; yLine++) {
-      const xLine = Array(this.length).fill(fielCell);
-      this.map.push(xLine);
+    for (let yAxis = 0; yAxis < this.height; yAxis++) {
+      const xAxis = Array(this.length).fill(fielCell);
+      this.map.push(xAxis);
     }
   }
 
-  public addMountain(position: GeoCoordinate) {
+  public get mapCopy() {
+    const jsonMap = JSON.stringify(this.map);
+    const deepCopyMap = JSON.parse(jsonMap);
+    return deepCopyMap;
+  }
+
+  public addMountainAtPosition(position: GeoCoordinate) {
     const mountainCell = this.createMountainCell();
     this.setCell(position, mountainCell);
   }
 
-  public addTreasures(position: GeoCoordinate, count: number) {
-    const currentCell = this.getCell(position);
-
-    if (!isTreasureCell(currentCell)) {
-      const treasureCell = this.createTreasureCell();
-      this.setCell(position, treasureCell);
-    } else {
-      currentCell.count += count;
-      this.setCell(position, currentCell);
-    }
+  public addTreasuresAtPosition(position: GeoCoordinate, count: number) {
+    const treasureCell = this.createTreasureCell(count);
+    this.setCell(position, treasureCell);
   }
 
   public set adventurers(adventurers: Adventurer[]) {
@@ -54,28 +55,51 @@ export class Map {
       }
 
       const startingCell = this.getCell(position);
-      if (startingCell.adventurer !== undefined) {
-        throw new HttpException(
-          `Explorer ${adventurer.name} can't start here. This position is too crowded`,
-          400
-        );
+      if (isExplorableCell(startingCell)) {
+        if (startingCell.isBeingExplored) {
+          throw new HttpException(
+            `Explorer ${adventurer.name} can't start here. This position is too crowded`,
+            400
+          );
+        }
+        startingCell.isBeingExplored = true;
       }
-      startingCell.adventurer = adventurer;
     });
   }
 
   public isCellExplorable(position: GeoCoordinate) {
-    const targetCell = this.getCell(position);
-    const cellIsEmpty = targetCell.adventurer === undefined;
-    const cellIsExplorable = targetCell.type !== CellType.MOUNTAIN;
+    let cellIsExplorable = false;
+    const cell = this.getCell(position);
 
-    return this.isPositionInMap(position) && cellIsEmpty && cellIsExplorable;
+    if (this.isPositionInMap(position) && isExplorableCell(cell)) {
+      const cellIsEmpty = cell.isBeingExplored === false;
+      const cellTypeIsExplorable = cell.type !== CellType.MOUNTAIN;
+      cellIsExplorable = cellIsEmpty && cellTypeIsExplorable;
+    }
+    return cellIsExplorable;
   }
 
-  public moveAdventurer(adventurer: Adventurer) {
-    const { position, direction } = adventurer.getNextGeolocation();
-    // TODO: checker que ce soit la bonne geoloc
-    // TODO: bouger l'adventurer si tout est ok
+  public exploreCell(fromPosition: GeoCoordinate, toPosition: GeoCoordinate) {
+    this.setCellExplorationStatus(fromPosition, false);
+    this.setCellExplorationStatus(toPosition, true);
+  }
+
+  public lootCellTreasures(position: GeoCoordinate) {
+    let treasuresCount = 0;
+    const cellToLoot = this.getCell(position);
+
+    if (isTreasureCell(cellToLoot) && cellToLoot.count > 0) {
+      cellToLoot.count--;
+      treasuresCount++;
+    }
+    return treasuresCount;
+  }
+
+  private setCellExplorationStatus(position: GeoCoordinate, status: boolean) {
+    const cell = this.getCell(position);
+    if (isExplorableCell(cell)) {
+      cell.isBeingExplored = status;
+    }
   }
 
   private setCell(position: GeoCoordinate, cell: Cell) {
@@ -87,31 +111,29 @@ export class Map {
   }
 
   private createFieldCell(): FieldCell {
-    return { type: CellType.FIELD, explorable: true, adventurer: undefined };
+    return { type: CellType.FIELD, explorable: true, isBeingExplored: false };
   }
 
   private createMountainCell(): MountainCell {
     return {
       type: CellType.MOUNTAIN,
       explorable: false,
-      adventurer: undefined,
     };
   }
 
-  private createTreasureCell(): TreasureCell {
+  private createTreasureCell(count = 0): TreasureCell {
     return {
       type: CellType.TREASURE,
-      count: 0,
+      count,
       explorable: true,
-      adventurer: undefined,
+      isBeingExplored: false,
     };
   }
 
   public isPositionInMap(position: GeoCoordinate) {
-    const { x, y } = position;
-    return (
-      this.isIndexInRange(x, this.length) && this.isIndexInRange(y, this.height)
-    );
+    const xIsInMapRange = this.isIndexInRange(position.x, this.length);
+    const yIsInMapRange = this.isIndexInRange(position.y, this.height);
+    return xIsInMapRange && yIsInMapRange;
   }
 
   private isIndexInRange(index: number, range: number) {
