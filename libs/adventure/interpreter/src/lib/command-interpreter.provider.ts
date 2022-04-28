@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import {
   Command,
   isAdventurerCommand,
@@ -11,16 +11,20 @@ import {
 
 @Injectable()
 export class CommandInterpreterProvider {
-  private commands: Command[];
+  constructor(private commands: Command[]) {}
 
   feedCommands(commands: Command[]) {
     this.commands = commands;
   }
 
   public get map() {
-    const { length, height } = this.getMapCommand();
-    const map = new Map(length, height);
+    const mapCommand = this.getMapCommand();
 
+    if (mapCommand === undefined) {
+      throw new HttpException('Missing map configuration', 400);
+    }
+
+    const map = new Map(mapCommand.length, mapCommand.height);
     this.executeTreasurepCommands(map);
     this.executeMountainCommands(map);
     return map;

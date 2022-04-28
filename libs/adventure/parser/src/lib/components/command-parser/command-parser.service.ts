@@ -24,7 +24,7 @@ export class CommandParserService {
     const tokens = this.lexor.getTokens(line);
     const identifier = tokens.shift();
 
-    if (isCommandFlag(identifier)) {
+    if (identifier && isCommandFlag(identifier)) {
       const commandParser = this.commandParserFactory.getParser(identifier);
       if (commandParser) {
         const command = commandParser(tokens);
