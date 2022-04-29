@@ -8,7 +8,7 @@ export class AdventureParserService {
     private readonly fileParser: FileParserProvider,
     private readonly commandParser: CommandParserService
   ) {}
-  async parseAdventure(mapFilePath: string) {
+  parseAdventure(mapFilePath: string) {
     const fileContent = this.fileParser.getFileContent(mapFilePath);
     const commands = this.commandParser.parseFileContent(fileContent);
     return commands;

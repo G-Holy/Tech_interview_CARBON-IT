@@ -23,7 +23,8 @@ export class CommandInterpreter {
       throw new HttpException('Missing map configuration', 400);
     }
 
-    const map = new Map(mapCommand.length, mapCommand.height);
+    const { length, height } = mapCommand;
+    const map = new Map({ length, height });
     this.executeTreasurepCommands(map);
     this.executeMountainCommands(map);
     return map;
