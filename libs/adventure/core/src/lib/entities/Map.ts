@@ -1,7 +1,12 @@
 import { HttpException } from '@nestjs/common';
 import { Adventurer } from './Adventurer';
-import { deepCopyObject, isExplorableCell } from '../helpers';
-import { CellType, GeoCoordinate, isTreasureCell } from '../types';
+import { isExplorableCell } from '../helpers';
+import {
+  CellType,
+  GeoCoordinate,
+  isTreasureCell,
+  MapConfiguration,
+} from '../types';
 import { MapBuilder } from './MapBuilder';
 
 export interface MapSize {
@@ -10,25 +15,11 @@ export interface MapSize {
 }
 
 export class Map extends MapBuilder {
-  constructor(size: MapSize) {
-    super(size);
+  constructor(configuration: MapConfiguration) {
+    super(configuration);
   }
 
-  public addMountainAtPosition(position: GeoCoordinate) {
-    const mountainCell = this.createMountainCell(position);
-
-    this.mountains.push(mountainCell);
-    this.setCell(position, deepCopyObject(mountainCell));
-  }
-
-  public addTreasuresAtPosition(position: GeoCoordinate, count: number) {
-    const treasureCell = this.createTreasureCell(position, count);
-
-    this.treasures.push(treasureCell);
-    this.setCell(position, deepCopyObject(treasureCell));
-  }
-
-  public set adventurers(adventurers: Adventurer[]) {
+  public placeAdventurers(adventurers: Adventurer[]) {
     adventurers.forEach((adventurer) => {
       const position = adventurer.getPosition();
       if (!this.isPositionInMap(position)) {
@@ -52,7 +43,6 @@ export class Map extends MapBuilder {
       startingCell.isBeingExplored = true;
     });
   }
-
   private setCellExplorationStatus(position: GeoCoordinate, status: boolean) {
     const cell = this.getCell(position);
     if (isExplorableCell(cell)) {

@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AdventureInterpreter } from './adventure-interpreter.service';
-import { AdventureRunnerProvider } from './adventure-runner.provider';
-import { ReportFormatterProvider } from './report-formatter.provider';
+import { SimulationRunnerProvider } from './simulation-runner.provider';
+import { SimulationReportProvider } from './simulation-report.provider';
 import { CommandInterpreterProvider } from './command-interpreter.provider';
 
 @Module({
   providers: [
     AdventureInterpreter,
-    AdventureRunnerProvider,
+    SimulationRunnerProvider,
     CommandInterpreterProvider,
-    ReportFormatterProvider,
+    SimulationReportProvider,
   ],
   exports: [AdventureInterpreter],
 })

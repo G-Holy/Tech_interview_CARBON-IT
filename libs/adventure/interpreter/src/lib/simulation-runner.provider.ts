@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Adventurer, Map } from '@treasure-hunt/adventure/core';
 
 @Injectable()
-export class AdventureRunnerProvider {
+export class SimulationRunnerProvider {
   runAdventureLoop(map: Map, adventurers: Adventurer[]) {
     const maxTurnsCount = this.getMaxTurns(adventurers);
 

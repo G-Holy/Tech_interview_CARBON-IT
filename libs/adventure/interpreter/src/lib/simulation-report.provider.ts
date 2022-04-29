@@ -13,7 +13,7 @@ import {
 } from '@treasure-hunt/adventure/core';
 
 @Injectable()
-export class ReportFormatterProvider {
+export class SimulationReportProvider {
   public getSimulationReport(map: Map, adventurers: Adventurer[]) {
     const mapReport = this.formatMapReport(map);
     const mountainReports = this.formatMoutainReports(map);

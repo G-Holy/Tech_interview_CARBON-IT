@@ -1,4 +1,11 @@
+import { MapSize } from '../entities/Map';
 import { Enumerable, GeoCoordinate } from './adventure-types';
+
+export interface MapConfiguration {
+  size: MapSize;
+  mountains: MountainCell[];
+  treasures: TreasureCell[];
+}
 
 export enum CellType {
   MOUNTAIN = 'mountain',

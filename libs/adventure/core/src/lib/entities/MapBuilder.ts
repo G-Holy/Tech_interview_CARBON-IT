@@ -1,9 +1,8 @@
-import { deepCopyObject } from '../helpers';
+import { deepCopyObject, createFieldCell } from '../helpers';
 import {
   Cell,
-  CellType,
-  FieldCell,
   GeoCoordinate,
+  MapConfiguration,
   MapContent,
   MountainCell,
   TreasureCell,
@@ -14,16 +13,24 @@ export class MapBuilder {
   protected map: MapContent = [];
   protected treasures: TreasureCell[] = [];
   protected mountains: MountainCell[] = [];
+  protected size: MapSize = { length: 0, height: 0 };
 
-  constructor(protected readonly size: MapSize) {
-    this.createMap();
+  constructor(configuration: MapConfiguration) {
+    const { size, mountains, treasures } = configuration;
+    this.buildMap(size);
+    this.setCells(mountains);
+    this.setCells(treasures);
+
+    this.size = size;
+    this.treasures = treasures;
+    this.mountains = mountains;
   }
 
-  private createMap() {
-    for (let longitude = 0; longitude < this.size.height; longitude++) {
-      const mapLine = new Array(this.size.length)
+  private buildMap(size: MapSize) {
+    for (let longitude = 0; longitude < size.height; longitude++) {
+      const mapLine = new Array(size.length)
         .fill({})
-        .map((latitude) => this.createFieldCell({ x: latitude, y: longitude }));
+        .map((latitude) => createFieldCell({ x: latitude, y: longitude }));
       this.map.push(mapLine);
     }
   }
@@ -44,35 +51,15 @@ export class MapBuilder {
     return deepCopyObject(this.size);
   }
 
-  private createFieldCell(position: GeoCoordinate): FieldCell {
-    return { type: CellType.FIELD, position, isBeingExplored: false };
-  }
-
-  protected createMountainCell(position: GeoCoordinate): MountainCell {
-    return {
-      type: CellType.MOUNTAIN,
-      position,
-      explorable: false,
-    };
-  }
-
-  protected createTreasureCell(
-    position: GeoCoordinate,
-    count = 0
-  ): TreasureCell {
-    return {
-      type: CellType.TREASURE,
-      position,
-      count,
-      isBeingExplored: false,
-    };
-  }
-
   protected getCell(position: GeoCoordinate) {
     return this.map[position.y][position.x];
   }
 
   protected setCell(position: GeoCoordinate, cell: Cell) {
     this.map[position.y][position.x] = cell;
+  }
+
+  private setCells(cells: Cell[]) {
+    cells.forEach((cell) => this.setCell(cell.position, cell));
   }
 }

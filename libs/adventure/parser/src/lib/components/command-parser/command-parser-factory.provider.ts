@@ -14,8 +14,10 @@ export const commandParserIndex = {
   [CommandFlag.MAP]: (tokens: CommandTokens): MapCommand => {
     return {
       type: CommandFlag.MAP,
-      length: +tokens[0],
-      height: +tokens[1],
+      size: {
+        length: +tokens[0],
+        height: +tokens[1],
+      },
     };
   },
   [CommandFlag.MOUNTAIN]: (tokens: CommandTokens): MountainCommand => {

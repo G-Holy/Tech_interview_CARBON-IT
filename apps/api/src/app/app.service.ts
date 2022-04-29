@@ -8,8 +8,8 @@ import { AdventureInterpreter } from '@treasure-hunt/adventure/interpreter';
 @Injectable()
 export class AppService {
   constructor(
-    private readonly adventureParser: AdventureParserService,
-    private readonly adventureInterpreter: AdventureInterpreter
+    private readonly parser: AdventureParserService,
+    private readonly interpreter: AdventureInterpreter
   ) {}
 
   async downloadTreasures(mapFileName: string) {
@@ -17,18 +17,12 @@ export class AppService {
       appConfig.uploadDirectoryPath,
       mapFileName
     );
-    const commands = await this.adventureParser.parseAdventure(mapFilePath);
-    console.log('PARSE: ', commands);
-
-    const resultFile = this.adventureInterpreter.interpreteSimulation(commands);
-    console.log('GENERATE :', resultFile);
-    // TODO: return resultFile stream
-
-    return undefined;
+    const commands = this.parser.parseAdventure(mapFilePath);
+    const simulationResult = this.interpreter.interpreteSimulation(commands);
+    return simulationResult;
   }
 
   uploadTreasureMap(mapFile: Express.Multer.File) {
-    // TODO: manage uploading big files and exceptions
     return { mapFileName: mapFile.filename };
   }
 

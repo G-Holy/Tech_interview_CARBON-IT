@@ -1,12 +1,18 @@
-import { Cell, ExplorableCell } from './types';
 import {
+  Cell,
+  ExplorableCell,
+  CellType,
+  FieldCell,
+  GeoCoordinate,
+  MountainCell,
+  TreasureCell,
   AdventurerCommand,
   Command,
   CommandFlag,
   MapCommand,
   MountainCommand,
   TreasureCommand,
-} from './types/command-types';
+} from './types';
 
 export const isMapCommand = (command: Command): command is MapCommand =>
   command.type === CommandFlag.MAP;
@@ -31,4 +37,28 @@ export const deepCopyObject = <ObjectType>(object: ObjectType): ObjectType => {
   const stringifiedObject = JSON.stringify(object);
   const objectCopy = JSON.parse(stringifiedObject);
   return objectCopy;
+};
+
+export const createFieldCell = (position: GeoCoordinate): FieldCell => {
+  return { type: CellType.FIELD, position, isBeingExplored: false };
+};
+
+export const createMountainCell = (position: GeoCoordinate): MountainCell => {
+  return {
+    type: CellType.MOUNTAIN,
+    position,
+    explorable: false,
+  };
+};
+
+export const createTreasureCell = (
+  position: GeoCoordinate,
+  count = 0
+): TreasureCell => {
+  return {
+    type: CellType.TREASURE,
+    position,
+    count,
+    isBeingExplored: false,
+  };
 };

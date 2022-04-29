@@ -15,8 +15,10 @@ export interface Command {
 
 export interface MapCommand extends Command {
   type: CommandFlag.MAP;
-  length: number;
-  height: number;
+  size: {
+    length: number;
+    height: number;
+  };
 }
 
 export interface MountainCommand extends Command, Localizable {
