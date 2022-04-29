@@ -45,6 +45,4 @@ it will upload and generate the simulation report
 
 ## Running unit tests
 
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
+Run `nx test adventure-interpreter` to execute the unit tests via [Jest](https://jestjs.io).
