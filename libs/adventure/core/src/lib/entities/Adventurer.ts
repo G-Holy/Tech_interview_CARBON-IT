@@ -1,11 +1,11 @@
-import { deepCopyObject } from './helpers';
+import { deepCopyObject } from '../helpers';
 import { movementFactory } from './Movement';
 import {
   AdventurerMovement,
   CardinalDirection,
   GeoCoordinate,
   Geolocation,
-} from './types';
+} from '../types';
 
 export class Adventurer {
   private treasures = 0;
@@ -18,6 +18,10 @@ export class Adventurer {
 
   public get movementsLeft(): number {
     return this.movements.length;
+  }
+
+  public getTreasuresCount() {
+    return this.treasures;
   }
 
   public getGeolocation(): Geolocation {

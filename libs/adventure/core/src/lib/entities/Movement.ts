@@ -2,8 +2,8 @@ import {
   AdventurerMovement,
   CardinalDirection,
   CARDINAL_DIRECTION_COMPASS,
-} from './types/adventurer-types';
-import { Geolocation } from './types/adventurer-types';
+} from '../types/adventurer-types';
+import { Geolocation } from '../types/adventurer-types';
 
 abstract class Movement {
   constructor(protected readonly geolocation: Geolocation) {}

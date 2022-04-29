@@ -20,9 +20,7 @@ export class AppService {
     const commands = await this.adventureParser.parseAdventure(mapFilePath);
     console.log('PARSE: ', commands);
 
-    const resultFile = await this.adventureInterpreter.interpretAdventure(
-      commands
-    );
+    const resultFile = this.adventureInterpreter.interpreteSimulation(commands);
     console.log('GENERATE :', resultFile);
     // TODO: return resultFile stream
 

@@ -3,8 +3,6 @@ import { CommandTokens } from '@treasure-hunt/adventure/core';
 
 @Injectable()
 export class CommandLexerProvider {
-  constructor() {}
-
   getTokens(line: string): CommandTokens {
     const sanitizedLine = this.sanitizeLine(line);
     return sanitizedLine.split(' ');
