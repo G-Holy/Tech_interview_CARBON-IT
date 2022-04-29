@@ -12,7 +12,6 @@ import { AppService } from './app.service';
     MulterModule.register({ dest: appConfig.uploadDirectoryPath }),
     AdventureParserModule,
     AdventureInterpreterModule,
-    // TODO: file manager class to create result file
   ],
   controllers: [AppController],
   providers: [AppService],

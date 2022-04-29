@@ -14,7 +14,6 @@ export class CommandParserService {
     private readonly lexor: CommandLexerProvider
   ) {}
 
-  // TODO: clean this function into smaller functions
   parseFileContent(lines: FileContent) {
     const commands = lines.reduce(this.parseLineCallback, []);
     return commands;
@@ -28,8 +27,6 @@ export class CommandParserService {
       const commandParser = this.commandParserFactory.getParser(identifier);
       if (commandParser) {
         const command = commandParser(tokens);
-        // TODO avec class + validation : const command = commandParser.parse(tokens);
-        // TODO: typer les commandes
         parsedCommands.push(command);
       }
     }

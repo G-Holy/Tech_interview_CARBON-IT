@@ -25,6 +25,11 @@ export class CommandInterpreterProvider {
     return { size, mountains, treasures };
   }
 
+  private isAdventureValid(commands: Command[]) {
+    const oneMapCommand = commands.filter(isMapCommand).length === 1;
+    return [oneMapCommand].every((isRuleValid) => isRuleValid);
+  }
+
   private getMapSize(commands: Command[]) {
     const mapCommand = commands.find(isMapCommand);
 
@@ -73,11 +78,6 @@ export class CommandInterpreterProvider {
     return adventurers;
   }
 
-  private isAdventureValid(commands: Command[]) {
-    const oneMapCommand = commands.filter(isMapCommand).length === 1;
-    return [oneMapCommand].every((isRuleValid) => isRuleValid);
-  }
-
   private getAdventurersCommand(commands: Command[]) {
     return commands.filter(isAdventurerCommand);
   }
@@ -90,7 +90,3 @@ export class CommandInterpreterProvider {
     return commands.filter(isMountainCommand);
   }
 }
-
-export const COMMAND_INTERPRETER_PROVIDER_KEY = Symbol(
-  'CommandInterpreterProvider'
-);

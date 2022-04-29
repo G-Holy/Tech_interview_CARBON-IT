@@ -22,19 +22,6 @@ abstract class Movement {
       throw new Error('Woops. The compass is broken ====');
     }
     this.geolocation.direction = newDirection;
-
-    // !Debug
-    console.log('\n ', CARDINAL_DIRECTION_COMPASS);
-    console.log(
-      '🚀 ~ file: Movement.ts ~ CURRENT direction ',
-      this.geolocation.direction,
-      this.directionIndex
-    );
-    console.log(
-      '🚀 ~ file: Movement.ts ~ NEW direction ',
-      newDirection,
-      newDirectionIndex
-    );
   }
 
   protected get directionIndex(): number {

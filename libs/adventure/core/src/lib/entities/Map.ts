@@ -54,22 +54,9 @@ export class Map extends MapBuilder {
     let cellIsExplorable = false;
     const cell = this.getCell(position);
 
-    console.log(
-      '🚀 ~ file: Map.ts ~  this.isPositionInMap(position)',
-      this.isPositionInMap(position)
-    );
-    console.log(
-      '🚀 ~ file: Map.ts ~  isExplorableCell(cell))',
-      isExplorableCell(cell)
-    );
     if (this.isPositionInMap(position) && isExplorableCell(cell)) {
       const cellIsEmpty = cell.isBeingExplored === false;
-      console.log('🚀 ~ file: Map.ts ~ cellIsEmpty', cellIsEmpty);
       const cellTypeIsExplorable = cell.type !== CellType.MOUNTAIN;
-      console.log(
-        '🚀 ~ file: Map.ts ~ cellTypeIsExplorable',
-        cellTypeIsExplorable
-      );
       cellIsExplorable = cellIsEmpty && cellTypeIsExplorable;
     }
     return cellIsExplorable;

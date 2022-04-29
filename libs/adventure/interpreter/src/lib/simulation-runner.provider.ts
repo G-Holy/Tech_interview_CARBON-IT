@@ -7,8 +7,6 @@ export class SimulationRunnerProvider {
     const maxTurnsCount = this.getMaxTurns(adventurers);
 
     for (let turn = 0; turn < maxTurnsCount; turn++) {
-      console.log('turn : ', turn);
-
       this.runAdventurersTurn(adventurers, map);
     }
   }
@@ -23,25 +21,11 @@ export class SimulationRunnerProvider {
 
   private runAdventurersTurn(adventurers: Adventurer[], map: Map) {
     adventurers.forEach((adventurer) => {
-      // !Debug
-      console.log('\n');
-      console.log(`BEFORE-TURN adventurer `, JSON.stringify(adventurer));
-
       const { position: positionIntent, direction } =
         adventurer.getNextGeolocation();
 
-      // !Debug
-      console.log('CURRENT geoloc : ', adventurer.getGeolocation());
-      console.log('NEXT geoloc : ', positionIntent);
-
       adventurer.setDirection(direction);
 
-      // !Debug
-      console.log('DIRECTION after switch ', direction);
-      console.log(
-        '🚀 ~ IS NEXT CELL EXPLORABLE (maybe current)',
-        map.isCellExplorable(positionIntent)
-      );
       if (map.isCellExplorable(positionIntent)) {
         const { position: currentPosition } = adventurer.getGeolocation();
 
@@ -51,10 +35,6 @@ export class SimulationRunnerProvider {
         const treasuresLootedCount = map.lootCellTreasures(positionIntent);
         adventurer.putTreasuresInBackpack(treasuresLootedCount);
       }
-
-      // !Debug
-      console.log(`AFTER-MAP `, map.mapCopy);
-      console.log(`AFTER-TURN adventurer `, JSON.stringify(adventurer));
     });
   }
 }

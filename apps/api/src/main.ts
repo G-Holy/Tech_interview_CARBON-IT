@@ -6,7 +6,7 @@ import { AppModule } from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const globalPrefix = 'adventure-time';
+  const globalPrefix = 'adventure-simulation';
   app.setGlobalPrefix(globalPrefix);
 
   const port = process.env.PORT || 4200;
