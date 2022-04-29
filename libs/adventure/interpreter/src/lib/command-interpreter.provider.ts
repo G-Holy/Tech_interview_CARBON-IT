@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Provider } from '@nestjs/common';
 import {
   Command,
   isAdventurerCommand,
@@ -9,8 +9,7 @@ import {
   Adventurer,
 } from '@treasure-hunt/adventure/core';
 
-@Injectable()
-export class CommandInterpreterProvider {
+export class CommandInterpreter {
   constructor(private commands: Command[]) {}
 
   feedCommands(commands: Command[]) {
@@ -82,3 +81,12 @@ export class CommandInterpreterProvider {
     return this.commands.filter(isMountainCommand);
   }
 }
+
+export const COMMAND_INTERPRETER_PROVIDER_KEY = Symbol(
+  'CommandInterpreterProvider'
+);
+
+export const CommandInterpreterProvider: Provider = {
+  provide: COMMAND_INTERPRETER_PROVIDER_KEY,
+  useValue: CommandInterpreter,
+};

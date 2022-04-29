@@ -26,3 +26,9 @@ export const isMountainCommand = (
 export const isExplorableCell = (cell: Cell): cell is ExplorableCell => {
   return 'isBeingExplored' in cell;
 };
+
+export const deepCopyObject = <ObjectType>(object: ObjectType): ObjectType => {
+  const stringifiedObject = JSON.stringify(object);
+  const objectCopy = JSON.parse(stringifiedObject);
+  return objectCopy;
+};

@@ -8,7 +8,6 @@ export enum CellType {
 
 export interface Cell {
   type: CellType;
-  explorable: boolean;
 }
 
 export interface ExplorableCell extends Cell {

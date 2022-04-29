@@ -22,6 +22,19 @@ abstract class Movement {
       throw new Error('Woops. The compass is broken ====');
     }
     this.geolocation.direction = newDirection;
+
+    // !Debug
+    console.log('\n ', CARDINAL_DIRECTION_COMPASS);
+    console.log(
+      '🚀 ~ file: Movement.ts ~ CURRENT direction ',
+      this.geolocation.direction,
+      this.directionIndex
+    );
+    console.log(
+      '🚀 ~ file: Movement.ts ~ NEW direction ',
+      newDirection,
+      newDirectionIndex
+    );
   }
 
   protected get directionIndex(): number {
@@ -42,26 +55,28 @@ class ForwardMovement extends Movement {
   }
 
   calculateNextGeolocation(): Geolocation {
+    const nextGeoLocation = this.geolocation;
+
     switch (this.geolocation.direction) {
       case CardinalDirection.NORTH:
-        this.geolocation.position.y--;
+        nextGeoLocation.position.y = nextGeoLocation.position.y - 1;
         break;
 
       case CardinalDirection.EAST:
-        this.geolocation.position.x++;
+        nextGeoLocation.position.x = nextGeoLocation.position.x + 1;
         break;
 
       case CardinalDirection.SOUTH:
-        this.geolocation.position.y++;
+        nextGeoLocation.position.y = nextGeoLocation.position.y + 1;
         break;
       case CardinalDirection.WEST:
-        this.geolocation.position.x--;
+        nextGeoLocation.position.x = nextGeoLocation.position.x - 1;
         break;
 
       default:
         break;
     }
-    return this.geolocation;
+    return nextGeoLocation;
   }
 }
 

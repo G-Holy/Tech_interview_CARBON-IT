@@ -1,3 +1,4 @@
+import { deepCopyObject } from './helpers';
 import { movementFactory } from './Movement';
 import {
   AdventurerMovement,
@@ -15,28 +16,32 @@ export class Adventurer {
     private readonly movements: AdventurerMovement[]
   ) {}
 
-  public get geolocation(): Geolocation {
-    return this.geoLocation;
-  }
-
-  public get position(): GeoCoordinate {
-    return this.geoLocation.position;
-  }
-
-  public set position(newPosition: GeoCoordinate) {
-    this.geoLocation.position = newPosition;
-  }
-
   public get movementsLeft(): number {
     return this.movements.length;
   }
 
-  public set direction(newDirection: CardinalDirection) {
+  public getGeolocation(): Geolocation {
+    return deepCopyObject(this.geoLocation);
+  }
+
+  public getPosition(): GeoCoordinate {
+    return deepCopyObject(this.geoLocation.position);
+  }
+
+  public setPosition(newPosition: GeoCoordinate) {
+    this.geoLocation.position = newPosition;
+  }
+
+  public setDirection(newDirection: CardinalDirection) {
     this.geoLocation.direction = newDirection;
   }
 
   public putTreasuresInBackpack(foundTreasures: number) {
     this.treasures += foundTreasures;
+  }
+
+  private get geoLocationCopy() {
+    return deepCopyObject<Geolocation>(this.geoLocation);
   }
 
   public move() {
@@ -47,16 +52,16 @@ export class Adventurer {
   }
 
   public getNextGeolocation() {
+    const currentGeoLocation = this.geoLocationCopy;
     const movementFlag = this.movements.shift();
     if (!movementFlag) {
-      return this.geolocation;
+      return currentGeoLocation;
     }
 
     const movement = movementFactory.createMovement(
       movementFlag,
-      this.geoLocation
+      currentGeoLocation
     );
-
     return movement.calculateNextGeolocation();
   }
 }
