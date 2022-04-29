@@ -1,52 +1,30 @@
 import { HttpException } from '@nestjs/common';
 import { Adventurer } from './Adventurer';
-import { deepCopyObject, isExplorableCell } from './helpers';
-import {
-  Cell,
-  CellType,
-  FieldCell,
-  GeoCoordinate,
-  isTreasureCell,
-  MapContent,
-  MountainCell,
-  TreasureCell,
-} from './types';
+import { deepCopyObject, isExplorableCell } from '../helpers';
+import { CellType, GeoCoordinate, isTreasureCell } from '../types';
+import { MapBuilder } from './MapBuilder';
 
-// TODO: !!! découpler MapBuilder/Map
-export class Map {
-  private map: MapContent = [];
+export interface MapSize {
+  length: number;
+  height: number;
+}
 
-  constructor(
-    private readonly length: number,
-    private readonly height: number
-  ) {
-    this.createMap();
-  }
-
-  private createMap() {
-    const fielCell: FieldCell = this.createFieldCell();
-    for (let yAxis = 0; yAxis < this.height; yAxis++) {
-      const mapLine = new Array(this.length)
-        .fill({})
-        .map(() => deepCopyObject(fielCell));
-
-      this.map.push(mapLine);
-    }
-  }
-
-  public get mapCopy() {
-    const jsonMap = JSON.stringify(this.map);
-    const deepCopyMap = JSON.parse(jsonMap);
-    return deepCopyMap;
+export class Map extends MapBuilder {
+  constructor(size: MapSize) {
+    super(size);
   }
 
   public addMountainAtPosition(position: GeoCoordinate) {
-    const mountainCell = this.createMountainCell();
+    const mountainCell = this.createMountainCell(position);
+
+    this.mountains.push(mountainCell);
     this.setCell(position, deepCopyObject(mountainCell));
   }
 
   public addTreasuresAtPosition(position: GeoCoordinate, count: number) {
-    const treasureCell = this.createTreasureCell(count);
+    const treasureCell = this.createTreasureCell(position, count);
+
+    this.treasures.push(treasureCell);
     this.setCell(position, deepCopyObject(treasureCell));
   }
 
@@ -73,6 +51,13 @@ export class Map {
       }
       startingCell.isBeingExplored = true;
     });
+  }
+
+  private setCellExplorationStatus(position: GeoCoordinate, status: boolean) {
+    const cell = this.getCell(position);
+    if (isExplorableCell(cell)) {
+      cell.isBeingExplored = status;
+    }
   }
 
   public isCellExplorable(position: GeoCoordinate) {
@@ -105,58 +90,24 @@ export class Map {
     this.setCellExplorationStatus(toPosition, true);
   }
 
-  private setCellExplorationStatus(position: GeoCoordinate, status: boolean) {
-    const cell = this.getCell(position);
-    if (isExplorableCell(cell)) {
-      cell.isBeingExplored = status;
-    }
-  }
-
   public lootCellTreasures(position: GeoCoordinate) {
     let treasuresCount = 0;
     const cellToLoot = this.getCell(position);
 
     if (isTreasureCell(cellToLoot) && cellToLoot.count > 0) {
-      cellToLoot.count--;
+      cellToLoot.count = cellToLoot.count - 1;
       treasuresCount++;
     }
     return treasuresCount;
   }
 
-  private setCell(position: GeoCoordinate, cell: Cell) {
-    this.map[position.y][position.x] = cell;
-  }
-
-  private getCell(position: GeoCoordinate) {
-    return this.map[position.y][position.x];
-  }
-
-  private createFieldCell(): FieldCell {
-    return { type: CellType.FIELD, isBeingExplored: false };
-  }
-
-  private createMountainCell(): MountainCell {
-    return {
-      type: CellType.MOUNTAIN,
-      explorable: false,
-    };
-  }
-
-  private createTreasureCell(count = 0): TreasureCell {
-    return {
-      type: CellType.TREASURE,
-      count,
-      isBeingExplored: false,
-    };
-  }
-
   public isPositionInMap(position: GeoCoordinate) {
-    const xIsInMapRange = this.isIndexInRange(position.x, this.length);
-    const yIsInMapRange = this.isIndexInRange(position.y, this.height);
+    const xIsInMapRange = this.isIndexInAxisRange(position.x, this.size.length);
+    const yIsInMapRange = this.isIndexInAxisRange(position.y, this.size.height);
     return xIsInMapRange && yIsInMapRange;
   }
 
-  private isIndexInRange(index: number, range: number) {
+  private isIndexInAxisRange(index: number, range: number) {
     return index >= 0 && index < range;
   }
 }

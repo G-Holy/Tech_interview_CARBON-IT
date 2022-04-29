@@ -1,4 +1,4 @@
-import { Enumerable } from './adventure-types';
+import { Enumerable, GeoCoordinate } from './adventure-types';
 
 export enum CellType {
   MOUNTAIN = 'mountain',
@@ -8,6 +8,7 @@ export enum CellType {
 
 export interface Cell {
   type: CellType;
+  position: GeoCoordinate;
 }
 
 export interface ExplorableCell extends Cell {
